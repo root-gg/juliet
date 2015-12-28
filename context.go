@@ -1,4 +1,4 @@
-package main
+package juliet
 
 type Context struct {
 	parent *Context

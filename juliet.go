@@ -1,4 +1,4 @@
-package main
+package juliet
 
 import (
 	"net/http"
@@ -25,7 +25,16 @@ func (chain *Chain) Append(cm contextMiddleware) (newChain *Chain) {
 	return newChain
 }
 
-func (chain *Chain) Head() (head *Chain){
+func (chain *Chain) AppendAll(cms... contextMiddleware) (newChain *Chain) {
+	newChain = chain
+	for _, cm := range cms {
+		newChain = newChain.Append(cm)
+	}
+
+	return newChain
+}
+
+func (chain *Chain) head() (head *Chain){
 	// Find the head of the chain
 	head = chain
 	for head.parent != nil {
@@ -34,23 +43,22 @@ func (chain *Chain) Head() (head *Chain){
 	return
 }
 
-func (chain *Chain) Copy() (newChain *Chain){
+func (chain *Chain) copy() (newChain *Chain){
 	newChain = NewChain(chain.middleware)
 	if chain.parent != nil {
-		newChain.parent = chain.parent.Copy()
+		newChain.parent = chain.parent.copy()
 	}
 	return
 }
 
-func (chain *Chain) Extend(tail *Chain) (newChain *Chain){
+func (chain *Chain) AppendChain(tail *Chain) (newChain *Chain){
 	// Copy the chain to attach
-	newChain = tail.Copy()
+	newChain = tail.copy()
 
-	// Copy the current chain and attach it
-	// to the head of the new chain
-	newChain.Head().parent = chain.Copy()
+	// Attach the chain to extend to the new tail
+	newChain.head().parent = chain
 
-	// Return the tail of the new chain
+	// Return the new tail
 	return
 }
 
@@ -96,7 +104,6 @@ func (ch *ContextHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request)
 
 	handler.ServeHTTP(resp,req)
 }
-
 
 // Adapt a function with the signature
 // func(Context, http.ResponseWriter, *http.Request) into a contextHandler

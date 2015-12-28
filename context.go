@@ -1,4 +1,8 @@
 package juliet
+import (
+	"github.com/root-gg/utils"
+	"fmt"
+)
 
 type Context struct {
 	parent *Context
@@ -34,4 +38,8 @@ func (ctx *Context) Fork() *Context {
 	nc := NewContext()
 	nc.parent = ctx
 	return nc
+}
+
+func (ctx *Context) Dump() {
+	fmt.Printf("%+v\n",ctx)
 }

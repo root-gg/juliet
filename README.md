@@ -3,7 +3,7 @@ Juliet is a lightweight middleware chaining helper that pass a Context (map) obj
 from a middleware to the next one.
 
 It is a rewrite of [Stack](https://github.com/alexedwards/stack) by Alex Edwards 
-witch is inspired by [Alice](https://github.com/justinas/alice) by Justinas Stankevicius
+which is inspired by [Alice](https://github.com/justinas/alice) by Justinas Stankevicius
 
 ### Write a ContextMiddleware
 ```

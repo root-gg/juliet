@@ -1,10 +1,10 @@
 package main
 
 import (
-	"net/http"
+	"fmt"
 	"log"
 	"net"
-	"fmt"
+	"net/http"
 
 	"github.com/root-gg/juliet"
 )
@@ -27,7 +27,7 @@ func logMiddleware(next http.Handler) http.Handler {
 
 // Juliet adds a context parameter to the middleware pattern that will be passed along the Chain.
 // For example this middleware puts the request's source IP address in the context.
-func getSourceIpMiddleware(ctx *juliet.Context, next http.Handler) http.Handler {
+func getSourceIPMiddleware(ctx *juliet.Context, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		// Get the source IP from the request remote address
@@ -50,7 +50,7 @@ func getSourceIpMiddleware(ctx *juliet.Context, next http.Handler) http.Handler 
 // As a context is nothing more that a map[interface{}]interface{} with syntactic sugar you have to ensure you
 // check types of values you get from the context. To keep your code clean you can write helpers to do that and keep
 // type safety everywhere.
-func getSourceIp(ctx *juliet.Context) string {
+func getSourceIP(ctx *juliet.Context) string {
 	if sourceIP, ok := ctx.Get("ip"); ok {
 		return sourceIP.(string)
 	}
@@ -65,16 +65,16 @@ func pingHandler(w http.ResponseWriter, r *http.Request) {
 // Juliet can also pass the context parameter to application Handlers
 func ipHandler(ctx *juliet.Context, resp http.ResponseWriter, req *http.Request) {
 	// write http response
-	resp.Write([]byte(fmt.Sprintf("your IP address is : %s\n", getSourceIp(ctx))))
+	resp.Write([]byte(fmt.Sprintf("your IP address is : %s\n", getSourceIP(ctx))))
 }
 
-func main(){
-	// Juliet links middleware and handler with chain objects
+func main() {
+	// Juliet links middleware and handler with chain objects.
 	chain := juliet.NewChain()
 
 	// Chain objects are immutable and any operation on it returns a new chain object.
 	// You can append one or more middleware to the chain at a time using the Append method.
-	chain = chain.Append(getSourceIpMiddleware)
+	chain = chain.Append(getSourceIPMiddleware)
 
 	// You can append a middleware to the beginning of the chain with the AppendChain method.
 	// When working with a non context-aware ( Juliet ) middleware you have to use the Adapt method.

@@ -9,20 +9,20 @@ type Context struct {
 	values map[interface{}]interface{}
 }
 
-// NewContext creates a new context instance.
+// NewContext create a new context instance.
 func NewContext() (ctx *Context) {
 	ctx = new(Context)
 	ctx.values = make(map[interface{}]interface{})
 	return
 }
 
-// Get returns the value matching the key from the context.
+// Get return the value matching the key from the context.
 func (ctx *Context) Get(key interface{}) (value interface{}, ok bool) {
 	value, ok = ctx.values[key]
 	return
 }
 
-// Set adds a value to the context or overrides a parent value.
+// Set add a value to the context or overrides a parent value.
 func (ctx *Context) Set(key interface{}, val interface{}) {
 	ctx.values[key] = val
 }
@@ -39,7 +39,7 @@ func (ctx *Context) Clear() {
 	}
 }
 
-// Copy creates a new copy of the context.
+// Copy create a new copy of the context.
 func (ctx *Context) Copy() *Context {
 	nc := NewContext()
 	for key, value := range ctx.values {
@@ -48,7 +48,7 @@ func (ctx *Context) Copy() *Context {
 	return nc
 }
 
-// String returns a string representation of the context values.
+// String return a string representation of the context values.
 func (ctx *Context) String() (str string) {
 	for key, value := range ctx.values {
 		str += fmt.Sprintf("%v => %v\n", key, value)

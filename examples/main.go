@@ -1,15 +1,3 @@
-
-Juliet is a lightweight middleware chaining helper that pass a Context (map) object
-from a middleware to the next one.
-
-This work is inspired by [Stack](https://github.com/alexedwards/stack) by Alex Edwards 
-and [Alice](https://github.com/justinas/alice) by Justinas Stankevicius.
-
-Godoc is here : https://godoc.org/github.com/root-gg/juliet   
-
-And there is a working example in the examples package :   
-
-```
 package main
 
 import (
@@ -121,4 +109,3 @@ func main(){
 // pong
 // $ curl 127.0.0.1:1234/404
 // 404 page not found
-```

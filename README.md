@@ -9,7 +9,7 @@ Godoc is here : https://godoc.org/github.com/root-gg/juliet
 
 And there is a working example in the examples package :   
 
-```
+```go
 package main
 
 import (
